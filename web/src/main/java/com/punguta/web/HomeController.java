@@ -1,4 +1,4 @@
-package com.punguta;
+package com.punguta.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Date: 5/14/14
  */
 @Controller
-public class DashboardController {
+public class HomeController {
 
-    @RequestMapping("/")
+    @RequestMapping("/home")
     public String index(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
-        return "index";
+        return "home/index";
     }
 }

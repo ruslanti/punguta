@@ -1,4 +1,4 @@
-package com.punguta.jpa.config;
+package com.punguta.domain.config;
 
 import java.sql.SQLException;
 
@@ -19,14 +19,14 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.punguta.repository.AccountRepository;
+import com.punguta.domain.repository.AccountRepository;
 
 /**
  * User: ruslan
  * Date: 5/15/14
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "com.punguta.repository",
+@EnableJpaRepositories(basePackages = "com.punguta.domain.repository",
         includeFilters = @ComponentScan.Filter(value = {AccountRepository.class}, type = FilterType.ASSIGNABLE_TYPE))
 @EnableTransactionManagement
 public class JPAConfiguration {

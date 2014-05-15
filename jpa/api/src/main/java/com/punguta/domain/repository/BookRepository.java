@@ -1,4 +1,4 @@
-package com.punguta.repository;
+package com.punguta.domain.repository;
 
 import org.springframework.data.repository.CrudRepository;
 

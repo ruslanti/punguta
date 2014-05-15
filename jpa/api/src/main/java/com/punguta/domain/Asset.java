@@ -1,4 +1,4 @@
-package com.punguta.domain.account;
+package com.punguta.domain;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -8,6 +8,6 @@ import javax.persistence.Entity;
  * Date: 5/15/14
  */
 @Entity
-@DiscriminatorValue("expense")
-public class Expense extends Account{
+@DiscriminatorValue("asset")
+public class Asset extends Account{
 }

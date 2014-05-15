@@ -1,4 +1,4 @@
-package com.punguta.domain.account;
+package com.punguta.domain;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;

@@ -1,8 +1,8 @@
-package com.punguta.repository;
+package com.punguta.domain.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.punguta.domain.account.Account;
+import com.punguta.domain.Account;
 
 /**
  * User: ruslan

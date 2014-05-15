@@ -1,4 +1,4 @@
-package com.punguta.repository;
+package com.punguta.domain.repository;
 
 import javax.persistence.EntityManager;
 
@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.punguta.jpa.config.JPAConfiguration;
+import com.punguta.domain.config.JPAConfiguration;
 
 /**
  * User: ruslan
