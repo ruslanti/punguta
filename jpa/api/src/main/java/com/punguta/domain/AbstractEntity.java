@@ -1,16 +1,19 @@
-package com.punguta;
+package com.punguta.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 /**
  * User: ruslan
  * Date: 5/15/14
  */
-public abstract class AbstractEntity {
+@MappedSuperclass
+public abstract class AbstractEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
