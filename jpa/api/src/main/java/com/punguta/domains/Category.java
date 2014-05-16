@@ -1,6 +1,8 @@
 package com.punguta.domains;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  * User: ruslan
@@ -13,12 +15,15 @@ public class Category extends AbstractEntity {
 
     private int budget;
 
+    @ManyToOne
     private Commodity commodity;
 
     private boolean hidden;
 
+    @OneToMany
     private Category ancestry;
 
+    @ManyToOne
     private Book book;
 
     public String getName() {

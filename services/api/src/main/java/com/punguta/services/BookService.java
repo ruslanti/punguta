@@ -5,4 +5,5 @@ package com.punguta.services;
  * Date: 5/15/14
  */
 public interface BookService {
+    public void createNewBook();
 }

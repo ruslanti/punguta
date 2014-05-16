@@ -17,5 +17,12 @@
         <module>impl</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.punguta</groupId>
+            <artifactId>punguta-jpa-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
