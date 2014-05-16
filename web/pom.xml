@@ -3,9 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <name>Web project</name>
-    <dependencies>
-
-    </dependencies>
     <parent>
         <artifactId>punguta</artifactId>
         <groupId>com.punguta</groupId>
@@ -14,6 +11,59 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>punguta-web</artifactId>
-    <packaging>pom</packaging>
+    <packaging>war</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.punguta</groupId>
+            <artifactId>punguta-jpa-impl</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.punguta</groupId>
+            <artifactId>punguta-jpa-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.punguta</groupId>
+            <artifactId>punguta-services-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.punguta</groupId>
+            <artifactId>punguta-services-impl</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.5.10</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>punguta</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <configuration>
+                    <url>http://127.0.0.1:8080/manager/text</url>
+                    <server>mytomcat7</server>
+                    <path>/punguta</path>
+                    <username>test</username>
+                    <password>test</password>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

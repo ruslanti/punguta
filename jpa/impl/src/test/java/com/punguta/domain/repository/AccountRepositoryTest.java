@@ -2,6 +2,7 @@ package com.punguta.domain.repository;
 
 import javax.persistence.EntityManager;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class AccountRepositoryTest {
     EntityManager manager;
 
     @Test
+    @Ignore
     public void thatAccount() throws Exception {
 /*        assertTableExists(manager, "NOODLE_ORDERS");
         assertTableExists(manager, "ORDER_ORDER_ITEMS");

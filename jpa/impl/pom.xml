@@ -3,13 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <name>JPA implementation project</name>
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <parent>
         <artifactId>punguta-jpa</artifactId>
@@ -19,4 +12,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>punguta-jpa-impl</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.punguta</groupId>
+            <artifactId>punguta-jpa-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

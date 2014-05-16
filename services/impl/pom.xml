@@ -12,5 +12,12 @@
 
     <artifactId>punguta-services-impl</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.punguta</groupId>
+            <artifactId>punguta-services-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
