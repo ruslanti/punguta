@@ -1,29 +1,35 @@
-package com.punguta;
+package com.punguta.domains.config;
+
+import java.sql.SQLException;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.sql.SQLException;
-
+import com.punguta.repositories.AccountRepository;
 
 /**
  * User: ruslan
- * Date: 5/14/14
+ * Date: 5/15/14
  */
 @Configuration
-@ComponentScan
-@EnableJpaRepositories("com.punguta.repositories")
-public class Config {
+@EnableJpaRepositories(basePackages = "com.punguta.repositories",
+        includeFilters = @ComponentScan.Filter(value = {AccountRepository.class}, type = FilterType.ASSIGNABLE_TYPE))
+@EnableTransactionManagement
+public class JPAConfiguration {
 
     @Bean
     public DataSource dataSource() throws SQLException {
@@ -45,10 +51,22 @@ public class Config {
         return factory.getObject();
     }
 
+/*    @Bean
+    public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
+        return entityManagerFactory.createEntityManager();
+    }*/
+
     @Bean
     public PlatformTransactionManager transactionManager() throws SQLException {
+
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory());
         return txManager;
     }
+
+    @Bean
+    public HibernateExceptionTranslator hibernateExceptionTranslator() {
+        return new HibernateExceptionTranslator();
+    }
+
 }
