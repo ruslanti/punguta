@@ -15,10 +15,9 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    @Override
-    public void createNewBook() {
-        Book book = new Book();
 
-        bookRepository.save(book);
+    @Override
+    public void register(Book book) {
+
     }
 }

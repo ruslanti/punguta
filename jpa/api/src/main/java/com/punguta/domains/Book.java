@@ -15,19 +15,19 @@ public class Book extends AbstractEntity {
 
     private Commodity defaultCommodity;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany
     private Set<Asset> assets;
 
-    @OneToOne(mappedBy = "book")
+    @OneToOne
     private Income income;
 
-    @OneToOne(mappedBy = "book")
+    @OneToOne
     private Expense expense;
 
-    @OneToOne(mappedBy = "book")
+    @OneToOne
     private Loan loan;
 
-    @OneToOne(mappedBy = "book")
+    @OneToOne
     private Liability liability;
 
     @OneToMany(mappedBy = "book")

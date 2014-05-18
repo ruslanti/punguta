@@ -27,9 +27,6 @@ public abstract class Account extends AbstractEntity {
     @ManyToOne
     private Commodity commodity;
 
-    @ManyToOne
-    private Book book;
-
     private  boolean hidden;
 
     public String getName() {
@@ -64,14 +61,6 @@ public abstract class Account extends AbstractEntity {
         this.commodity = commodity;
     }
 
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
     public boolean isHidden() {
         return hidden;
     }
@@ -87,7 +76,6 @@ public abstract class Account extends AbstractEntity {
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", commodity=" + commodity +
-                ", book=" + book +
                 ", hidden=" + hidden +
                 '}';
     }

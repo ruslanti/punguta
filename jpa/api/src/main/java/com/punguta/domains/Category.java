@@ -20,7 +20,7 @@ public class Category extends AbstractEntity {
 
     private boolean hidden;
 
-    @OneToMany
+    @ManyToOne
     private Category ancestry;
 
     @ManyToOne
