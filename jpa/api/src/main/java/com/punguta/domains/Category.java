@@ -1,5 +1,9 @@
 package com.punguta.domains;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -15,16 +19,35 @@ public class Category extends AbstractEntity {
 
     private int budget;
 
-    @ManyToOne
-    private Commodity commodity;
-
     private boolean hidden;
 
     @ManyToOne
     private Category ancestry;
 
-    @ManyToOne
-    private Book book;
+    @OneToMany(mappedBy = "ancestry")
+    private Set<Category> children = new HashSet<Category>();
+
+    Category() {
+    }
+
+    public Category(final Category ancestry) {
+        if (ancestry != null) {
+            this.ancestry = ancestry;
+            registerInParentsChilds();
+        }
+    }
+
+    private void registerInParentsChilds() {
+        this.ancestry.children.add(this);
+    }
+
+    public Set<Category> getChildren() {
+        return Collections.unmodifiableSet(this.children);
+    }
+
+    public static Category createRoot() {
+        return new Category();
+    }
 
     public String getName() {
         return name;
@@ -42,14 +65,6 @@ public class Category extends AbstractEntity {
         this.budget = budget;
     }
 
-    public Commodity getCommodity() {
-        return commodity;
-    }
-
-    public void setCommodity(Commodity commodity) {
-        this.commodity = commodity;
-    }
-
     public boolean isHidden() {
         return hidden;
     }
@@ -62,15 +77,12 @@ public class Category extends AbstractEntity {
         return ancestry;
     }
 
-    public void setAncestry(Category ancestry) {
-        this.ancestry = ancestry;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                ", budget=" + budget +
+                ", hidden=" + hidden +
+                '}';
     }
 }
