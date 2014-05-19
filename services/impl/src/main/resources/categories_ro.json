@@ -1,0 +1,21 @@
+{
+    "name":"ROOT",
+    "children":[
+        {
+        "name":"Cumparaturi",
+        "children":[
+            { "name": "Alimente" },
+            { "name": "Imbracaminte" },
+            { "name": "Altele" }
+        ]
+        },
+        {
+        "name":"Casa",
+        "children":[
+            { "name": "Intretinere" },
+            { "name": "Mobila si Tehnica" },
+            { "name": "Altele" }
+        ]
+        }
+    ]
+}
