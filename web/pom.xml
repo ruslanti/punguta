@@ -22,19 +22,13 @@
 
         <dependency>
             <groupId>com.punguta</groupId>
-            <artifactId>punguta-jpa-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.punguta</groupId>
-            <artifactId>punguta-services-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.punguta</groupId>
             <artifactId>punguta-services-impl</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.punguta</groupId>
+            <artifactId>punguta-rest-impl</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

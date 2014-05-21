@@ -1,9 +1,9 @@
 package com.punguta.services;
 
-import com.punguta.domains.Account;
-import com.punguta.domains.Book;
-import com.punguta.domains.Currency;
-import com.punguta.domains.User;
+import com.punguta.jpa.domains.Account;
+import com.punguta.jpa.domains.Book;
+import com.punguta.jpa.domains.Currency;
+import com.punguta.jpa.domains.User;
 import com.punguta.services.exceptions.PungutaException;
 
 /**

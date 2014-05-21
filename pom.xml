@@ -9,9 +9,10 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>web</module>
         <module>jpa</module>
         <module>services</module>
+        <module>rest</module>
+        <module>web</module>
     </modules>
 
     <properties>

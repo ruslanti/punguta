@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.punguta.domains.Currency;
-import com.punguta.repositories.CommodityRepository;
+import com.punguta.jpa.domains.Currency;
+import com.punguta.jpa.repositories.CommodityRepository;
 
 /**
  * Created by ruslanti on 16.05.2014.

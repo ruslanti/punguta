@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
-import com.punguta.domains.Category;
+import com.punguta.jpa.domains.Category;
 import com.punguta.services.helpers.json.JsonCategory;
 
 import junit.framework.Assert;

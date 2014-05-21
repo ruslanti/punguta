@@ -15,7 +15,7 @@ import com.punguta.services.helpers.json.JsonCategory;
  */
 public class CategoryBuilder {
 
-    private com.punguta.domains.Category ancestry = null;
+    private com.punguta.jpa.domains.Category ancestry = null;
     private String name = null;
     private int budget = 0;
     private boolean hidden = false;
@@ -43,11 +43,11 @@ public class CategoryBuilder {
         return new CategoryBuilder(jsonCategory);
     }
     
-    public com.punguta.domains.Category build() {
+    public com.punguta.jpa.domains.Category build() {
         if (name == null) {
             throw new IllegalArgumentException("category name is not defined");
         }
-        com.punguta.domains.Category category = new com.punguta.domains.Category(ancestry);
+        com.punguta.jpa.domains.Category category = new com.punguta.jpa.domains.Category(ancestry);
         category.setName(name);
         category.setBudget(budget);
         category.setHidden(hidden);
@@ -59,7 +59,7 @@ public class CategoryBuilder {
         return category;
     }
 
-    public CategoryBuilder setAncestry(com.punguta.domains.Category ancestry) {
+    public CategoryBuilder setAncestry(com.punguta.jpa.domains.Category ancestry) {
         this.ancestry = ancestry;
         return this;
     }

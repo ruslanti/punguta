@@ -3,13 +3,13 @@ package com.punguta.services.helpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.punguta.domains.Asset;
-import com.punguta.domains.Commodity;
-import com.punguta.domains.Expense;
-import com.punguta.domains.Income;
-import com.punguta.domains.Liability;
-import com.punguta.domains.Loan;
-import com.punguta.repositories.AccountRepository;
+import com.punguta.jpa.domains.Asset;
+import com.punguta.jpa.domains.Commodity;
+import com.punguta.jpa.domains.Expense;
+import com.punguta.jpa.domains.Income;
+import com.punguta.jpa.domains.Liability;
+import com.punguta.jpa.domains.Loan;
+import com.punguta.jpa.repositories.AccountRepository;
 
 /**
  * User: ruslan
