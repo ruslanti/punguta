@@ -1,29 +1,39 @@
 package com.punguta.services.events.expense;
 
-import com.punguta.services.events.SplitDetail.SplitDetail;
-
 import java.util.Date;
 import java.util.List;
+
+import com.punguta.services.events.SplitDetail.SplitDetail;
 
 /**
  * Created by ruslanti on 21.05.2014.
  */
 public class ExpenseDetail {
 
-    private Long accountId;
+    private Long userId;
+
+    private Long assetAccountId;
 
     private Date posted;
 
     private String note;
 
-    private List<SplitDetail> splits;
-
-    public Long getAccountId() {
-        return accountId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    private List<SplitDetail> splits;
+
+    public Long getAssetAccountId() {
+        return assetAccountId;
+    }
+
+    public void setAssetAccountId(Long assetAccountId) {
+        this.assetAccountId = assetAccountId;
     }
 
     public Date getPosted() {

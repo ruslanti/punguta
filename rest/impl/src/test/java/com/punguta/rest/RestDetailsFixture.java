@@ -21,7 +21,7 @@ public class RestDetailsFixture {
 
     public static ExpenseDetail generateExpenseDetail() {
         ExpenseDetail expenseDetail = new ExpenseDetail();
-        expenseDetail.setAccountId(1L);
+        expenseDetail.setAssetAccountId(1L);
         expenseDetail.setPosted(new Date());
         expenseDetail.setNote("Note");
         List<SplitDetail> splitDetails = new ArrayList<SplitDetail>(2);

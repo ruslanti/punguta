@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -24,7 +25,7 @@ public class Category extends AbstractEntity {
     @ManyToOne
     private Category ancestry;
 
-    @OneToMany(mappedBy = "ancestry")
+    @OneToMany(mappedBy = "ancestry", cascade = CascadeType.ALL)
     private Set<Category> children = new HashSet<Category>();
 
     Category() {

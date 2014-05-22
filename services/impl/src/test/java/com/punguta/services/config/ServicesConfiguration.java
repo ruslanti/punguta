@@ -1,4 +1,4 @@
-package com.punguta.jpa.domains.config;
+package com.punguta.services.config;
 
 import java.sql.SQLException;
 
@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -19,17 +18,15 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.punguta.jpa.repositories.AccountRepository;
-
 /**
  * User: ruslan
- * Date: 5/15/14
+ * Date: 5/22/14
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "com.punguta.jpa.repositories",
-        includeFilters = @ComponentScan.Filter(value = {AccountRepository.class}, type = FilterType.ASSIGNABLE_TYPE))
+@ComponentScan(basePackages = "com.punguta.services")
+@EnableJpaRepositories(basePackages = "com.punguta.jpa.repositories")
 @EnableTransactionManagement
-public class JPAConfiguration {
+public class ServicesConfiguration {
 
     @Bean
     public DataSource dataSource() throws SQLException {
@@ -63,5 +60,6 @@ public class JPAConfiguration {
     public HibernateExceptionTranslator hibernateExceptionTranslator() {
         return new HibernateExceptionTranslator();
     }
+
 
 }

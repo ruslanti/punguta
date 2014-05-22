@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 /**
  * User: ruslan
@@ -34,15 +36,17 @@ public abstract class AbstractEntity implements Serializable{
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    @PrePersist
+    private void setCreatedAt() {
+        createdAt = new Date();
+    }
+
+    @PreUpdate
+    private void setUpdatedAt() {
+        updatedAt = new Date();
     }
 }

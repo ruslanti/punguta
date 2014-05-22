@@ -9,4 +9,6 @@ import com.punguta.jpa.domains.Book;
  * Date: 5/15/14
  */
 public interface BookRepository extends CrudRepository<Book, Long>{
+
+    public Book findByUser(Long userId);
 }

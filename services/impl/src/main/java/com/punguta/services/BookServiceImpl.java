@@ -2,6 +2,8 @@ package com.punguta.services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,8 @@ import com.punguta.jpa.domains.Currency;
 import com.punguta.jpa.domains.User;
 import com.punguta.jpa.repositories.AccountRepository;
 import com.punguta.jpa.repositories.BookRepository;
+import com.punguta.jpa.repositories.CategoryRepository;
 import com.punguta.jpa.repositories.CommodityRepository;
-import com.punguta.services.exceptions.BookDefinedException;
 import com.punguta.services.exceptions.PungutaException;
 import com.punguta.services.helpers.AccountFactory;
 import com.punguta.services.helpers.CategoryBuilder;
@@ -38,36 +40,33 @@ public class BookServiceImpl implements BookService {
     private CommodityRepository commodityRepository;
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
     private AccountFactory accountFactory;
 
     @Override
-    public void register(User user, Currency defaultCurrency) throws PungutaException {
-        if (user.getBook() != null) {
-            throw new BookDefinedException("User "+user+" already has registered book");
-        }
+    public Book register(User user, Currency defaultCurrency) throws PungutaException, IOException {
         Book book = new Book();
+        book.setUser(user);
         book.setDefaultCommodity(defaultCurrency);
 
-        book.addAsset(accountFactory.createAsset(defaultCurrency));
+        final Asset asset = accountFactory.createAsset(defaultCurrency);
+        accountRepository.save(asset);
+        book.addAsset(asset);
         book.setExpense(accountFactory.createExpense(defaultCurrency));
         book.setIncome(accountFactory.createIncome(defaultCurrency));
         book.setLoan(accountFactory.createLoan(defaultCurrency));
         book.setLiability(accountFactory.createLiability(defaultCurrency));
 
         final InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("categories_ro.json");
-        Category rootCategory = null;
-        try {
-            rootCategory = CategoryBuilder.loadFromJson(inputStream).build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (rootCategory != null) {
-            book.setCategories(rootCategory.getChildren());
-        }
+        Category rootCategory = CategoryBuilder.loadFromJson(inputStream).build();
+        List<Category> categories = new ArrayList<Category>();
+        categoryRepository.save(rootCategory);
+        book.setCategories(rootCategory.getChildren());
 
         bookRepository.save(book);
-        user.setBook(book);
+        return book;
     }
 
     @Override

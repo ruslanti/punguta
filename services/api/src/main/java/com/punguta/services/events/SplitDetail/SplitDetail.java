@@ -8,6 +8,8 @@ public class SplitDetail {
 
     private String currency;
 
+    private String note;
+
     public Integer getValue() {
         return value;
     }
@@ -22,5 +24,13 @@ public class SplitDetail {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

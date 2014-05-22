@@ -1,10 +1,12 @@
 package com.punguta.jpa.domains;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * User: ruslan
@@ -13,6 +15,10 @@ import java.util.Set;
 @Entity
 public class Book extends AbstractEntity {
 
+    @OneToOne
+    private User user;
+
+    @ManyToOne
     private Commodity defaultCommodity;
 
     @OneToMany
@@ -101,5 +107,13 @@ public class Book extends AbstractEntity {
             categories = new HashSet<Category>();
         }
         categories.add(category);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
