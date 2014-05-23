@@ -1,9 +1,11 @@
 package com.punguta.services.events.expense;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.punguta.services.events.SplitDetail.SplitDetail;
+import com.punguta.jpa.domains.Transaction;
 
 /**
  * Created by ruslanti on 21.05.2014.
@@ -18,6 +20,10 @@ public class ExpenseDetail {
 
     private String note;
 
+    private SplitDetail assetSplit;
+
+    private Set<SplitDetail> splitDetails;
+
     public Long getUserId() {
         return userId;
     }
@@ -25,8 +31,6 @@ public class ExpenseDetail {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
-    private List<SplitDetail> splits;
 
     public Long getAssetAccountId() {
         return assetAccountId;
@@ -52,12 +56,44 @@ public class ExpenseDetail {
         this.note = note;
     }
 
-    public List<SplitDetail> getSplits() {
-        return splits;
+    public Set<SplitDetail> getSplitDetails() {
+        return splitDetails;
     }
 
-    public void setSplits(List<SplitDetail> splits) {
-        this.splits = splits;
+    public void setSplitDetails(Set<SplitDetail> splitDetails) {
+        this.splitDetails = splitDetails;
     }
 
+    public SplitDetail getAssetSplit() {
+        return assetSplit;
+    }
+
+    public void setAssetSplit(SplitDetail assetSplit) {
+        this.assetSplit = assetSplit;
+    }
+
+    public void addSplitDetail(SplitDetail splitDetail) {
+        if (splitDetails == null) {
+            splitDetails = new HashSet<>();
+        }
+        splitDetails.add(splitDetail);
+    }
+
+    public Transaction toTransaction() {
+        final Transaction transaction = new Transaction();
+        transaction.setDate(posted);
+        transaction.setNote(note);
+        transaction.setSplits(splitDetails.stream().map(
+                SplitDetail::toSplit).collect(Collectors.toSet()));
+        return transaction;
+    }
+
+    public static ExpenseDetail fromTransaction(Transaction transaction) {
+        final ExpenseDetail expenseDetail = new ExpenseDetail();
+        expenseDetail.setPosted(transaction.getDate());
+        expenseDetail.setNote(transaction.getNote());
+        expenseDetail.setSplitDetails(transaction.getSplits().stream().map(
+                SplitDetail::fromSplit).collect(Collectors.toSet()));
+        return expenseDetail;
+    }
 }

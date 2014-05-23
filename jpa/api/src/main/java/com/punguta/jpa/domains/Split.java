@@ -1,7 +1,9 @@
 package com.punguta.jpa.domains;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * User: ruslan
@@ -14,7 +16,10 @@ public class Split extends AbstractEntity {
 
     private int value;
 
-    @ManyToOne
+    @Transient
+    private String categoryName;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
     private Category category;
 
     private String note;
@@ -62,12 +67,20 @@ public class Split extends AbstractEntity {
         this.account = account;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     @Override
     public String toString() {
         return "Split{" +
                 "qty=" + qty +
                 ", value=" + value +
-                ", category=" + category +
+                ", category=" + categoryName +
                 ", note='" + note + '\'' +
                 ", account=" + account +
                 '}';

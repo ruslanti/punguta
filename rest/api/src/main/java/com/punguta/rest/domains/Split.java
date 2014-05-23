@@ -1,8 +1,8 @@
 package com.punguta.rest.domains;
 
-import com.punguta.services.events.SplitDetail.SplitDetail;
-import com.punguta.services.events.expense.ExpenseDetail;
 import org.springframework.beans.BeanUtils;
+
+import com.punguta.services.events.expense.SplitDetail;
 
 /**
  * Created by ruslanti on 21.05.2014.
@@ -13,11 +13,6 @@ public class Split {
     private String currency;
 
     public Split() {
-    }
-
-    public Split(Integer value, String currency) {
-        this.value = value;
-        this.currency = currency;
     }
 
     public static Split fromSplitDetail(SplitDetail splitDetail) {

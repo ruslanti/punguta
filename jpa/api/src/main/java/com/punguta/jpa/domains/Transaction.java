@@ -3,6 +3,7 @@ package com.punguta.jpa.domains;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -15,7 +16,7 @@ public class Transaction extends AbstractEntity {
 
     private Date date;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Split> splits;
 
     private String note;

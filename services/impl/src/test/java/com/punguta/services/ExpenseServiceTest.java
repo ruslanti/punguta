@@ -1,8 +1,10 @@
 package com.punguta.services;
 
 import static com.punguta.services.ServicesFixture.generateUser;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +23,7 @@ import com.punguta.services.config.ServicesConfiguration;
 import com.punguta.services.events.expense.ExpenseCreateEvent;
 import com.punguta.services.events.expense.ExpenseCreatedEvent;
 import com.punguta.services.events.expense.ExpenseDetail;
+import com.punguta.services.events.expense.SplitDetail;
 import com.punguta.services.exceptions.PungutaException;
 
 /**
@@ -55,11 +58,23 @@ public class ExpenseServiceTest {
     @Test
     public void firstExpense() {
         final ExpenseDetail expenseDetail = new ExpenseDetail();
+        expenseDetail.setUserId(book.getUser().getId());
         for (Asset asset : book.getAssets()) {
             expenseDetail.setAssetAccountId(asset.getId());
             break;
         }
+        expenseDetail.setNote("firstExpense");
+        expenseDetail.setPosted(new Date());
+        final SplitDetail splitDetail = new SplitDetail();
+        splitDetail.setNote("Split note");
+        splitDetail.setValue(10);
+        splitDetail.setCategoryName("Alimente");
+        expenseDetail.addSplitDetail(splitDetail);
         final ExpenseCreateEvent expenseCreateEvent = new ExpenseCreateEvent(expenseDetail);
         final ExpenseCreatedEvent expenseCreatedEvent = expenseService.create(expenseCreateEvent);
+
+        assertNotNull(expenseCreatedEvent);
+        assertNotNull(expenseCreatedEvent.getId());
+        assertNotNull(expenseCreatedEvent.getDetail());
     }
 }

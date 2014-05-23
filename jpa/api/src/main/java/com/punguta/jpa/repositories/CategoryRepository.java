@@ -9,4 +9,6 @@ import com.punguta.jpa.domains.Category;
  * Date: 5/22/14
  */
 public interface CategoryRepository extends CrudRepository<Category, Long>{
+
+    public Category findByName(String name);
 }

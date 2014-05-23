@@ -2,9 +2,7 @@ package com.punguta.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -14,14 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.punguta.jpa.domains.Account;
 import com.punguta.jpa.domains.Book;
+import com.punguta.jpa.domains.Category;
 import com.punguta.jpa.domains.Expense;
 import com.punguta.jpa.domains.Split;
 import com.punguta.jpa.domains.Transaction;
 import com.punguta.jpa.repositories.AccountRepository;
 import com.punguta.jpa.repositories.BookRepository;
+import com.punguta.jpa.repositories.CategoryRepository;
 import com.punguta.jpa.repositories.SplitRepository;
 import com.punguta.jpa.repositories.TransactionRepository;
-import com.punguta.services.events.SplitDetail.SplitDetail;
 import com.punguta.services.events.expense.ExpenseCreateEvent;
 import com.punguta.services.events.expense.ExpenseCreatedEvent;
 import com.punguta.services.events.expense.ExpenseDeleteEvent;
@@ -51,43 +50,40 @@ public class ExpenseServiceImpl implements ExpenseService{
     @Resource
     private SplitRepository splitRepository;
 
+    @Resource
+    private CategoryRepository categoryRepository;
+
     @Override
     public ExpenseCreatedEvent create(ExpenseCreateEvent expenseCreateEvent) {
-        final Transaction transaction = new Transaction();
         final ExpenseDetail expenseDetail = expenseCreateEvent.getDetail();
-        
-        transaction.setDate(expenseDetail.getPosted());
-        transaction.setNote(expenseDetail.getNote());
 
-        final Book book = bookRepository.findByUser(expenseDetail.getUserId());
+        final Book book = bookRepository.findByUserId(expenseDetail.getUserId());
         final Account assetAccount = accountRepository.findOne(expenseDetail.getAssetAccountId());
         final Expense expenseAccount = book.getExpense();
-        final Set<Split> splits = new HashSet<Split>();
+
+        final Transaction transaction = expenseDetail.toTransaction();
+
         int assetValue = 0;
 
-        for (SplitDetail splitDetail : expenseDetail.getSplits()) {
-            final Split expenseSplit = new Split();
-            expenseSplit.setAccount(expenseAccount);
-            final Integer value = splitDetail.getValue();
-            expenseSplit.setQty(value);
-            expenseSplit.setValue(value);
-            expenseSplit.setNote(splitDetail.getNote());
-            splits.add(expenseSplit);
-            assetValue += value;
+        for (Split split : transaction.getSplits()) {
+            split.setAccount(expenseAccount);
+            final Category category = categoryRepository.findByName(split.getCategoryName());
+            split.setCategory(category);
+            assetValue += split.getValue();
         }
 
         final Split assetSplit = new Split();
         assetSplit.setAccount(assetAccount);
         assetSplit.setQty(assetValue);
         assetSplit.setValue(assetValue);
-        splits.add(assetSplit);
+        transaction.getSplits().add(assetSplit);
 
-        transaction.setSplits(splits);
-        
-        splitRepository.save(splits);
         transactionRepository.save(transaction);
 
-        return new ExpenseCreatedEvent(transaction.getId(), expenseDetail);
+        final ExpenseDetail returnExpenseDetail = ExpenseDetail.fromTransaction(transaction);
+        returnExpenseDetail.setAssetAccountId(assetAccount.getId());
+
+        return new ExpenseCreatedEvent(transaction.getId(), returnExpenseDetail);
     }
 
     @Override
@@ -102,7 +98,7 @@ public class ExpenseServiceImpl implements ExpenseService{
 
     @Override
     public ExpenseReadEvent list(ExpenseRequestReadEvent expenseRequestReadEvent) {
-        List<ExpenseDetail> expenseDetails = new ArrayList<ExpenseDetail>();
+        List<ExpenseDetail> expenseDetails = new ArrayList<>();
         expenseDetails.add(new ExpenseDetail());
         ExpenseReadEvent readEvent = new ExpenseReadEvent(Collections.emptyList());
         return readEvent;

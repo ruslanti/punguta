@@ -1,12 +1,13 @@
 package com.punguta.rest.domains;
 
-import com.punguta.services.events.SplitDetail.SplitDetail;
-import com.punguta.services.events.expense.ExpenseDetail;
+import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.punguta.services.events.expense.ExpenseDetail;
+import com.punguta.services.events.expense.SplitDetail;
 
 /**
  * Created by ruslanti on 21.05.2014.
@@ -19,39 +20,22 @@ public class Expense {
 
     private String note;
 
-    private List<Split> splits;
-
-    public Expense() {
-    }
-
-    public Expense(Date posted, Long accountId, String note, List<Split> splits) {
-        this.splits = splits;
-        this.accountId = accountId;
-        this.posted = posted;
-        this.note = note;
-    }
+    private Set<Split> splits;
 
     public static Expense fromExpenseDetail(ExpenseDetail expenseDetail) {
         Expense expense = new Expense();
         BeanUtils.copyProperties(expenseDetail, expense, "splits");
-        List<SplitDetail> expenseDetailSplits = expenseDetail.getSplits();
-        expense.splits = new ArrayList<Split>(expenseDetailSplits.size());
-        for (SplitDetail splitDetail : expenseDetailSplits) {
-            expense.splits.add(Split.fromSplitDetail(splitDetail));
-        }
-
+        Set<SplitDetail> expenseDetailSplits = expenseDetail.getSplitDetails();
+        expense.splits = expenseDetailSplits.stream().map(
+                Split::fromSplitDetail).collect(Collectors.toSet());
         return expense;
     }
 
     public ExpenseDetail toExpenseDetail() {
         ExpenseDetail expenseDetail = new ExpenseDetail();
         BeanUtils.copyProperties(this, expenseDetail, "splits");
-        List<SplitDetail> splitDetails = new ArrayList<SplitDetail>(splits.size());
-        for (Split split : splits) {
-            splitDetails.add(split.toSplitDetail());
-        }
-        expenseDetail.setSplits(splitDetails);
-
+        expenseDetail.setSplitDetails(splits.stream().map(
+                Split::toSplitDetail).collect(Collectors.toSet()));
         return expenseDetail;
     }
 
@@ -79,12 +63,11 @@ public class Expense {
         this.note = note;
     }
 
-    public List<Split> getSplits() {
+    public Set<Split> getSplits() {
         return splits;
     }
 
-    public void setSplits(List<Split> splits) {
+    public void setSplits(Set<Split> splits) {
         this.splits = splits;
     }
-
 }

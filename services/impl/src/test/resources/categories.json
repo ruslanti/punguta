@@ -13,4 +13,19 @@
         ]
         }
     ]
+    "name":"",
+    "children":[
+        {
+        "name":"Altele",
+        "children":[ ]
+        },
+        {
+        "name":"Cumparaturi",
+        "children":[
+            { "name": "Alimente" },
+            { "name": "Imbracaminte" }
+        ]
+        }
+    ]
+
 }
