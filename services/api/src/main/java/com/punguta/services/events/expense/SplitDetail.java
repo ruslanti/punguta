@@ -12,6 +12,16 @@ public class SplitDetail {
 
     private String note;
 
+    private Long accountId;
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
     public Integer getValue() {
         return value;
     }

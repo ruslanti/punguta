@@ -10,11 +10,21 @@ import javax.persistence.Entity;
 @Entity
 public class User extends AbstractEntity{
 
+    private static User current;
+
     private String email;
 
     private String password;
 
     private Locale locale;
+
+    public static User getCurrent() {
+        return current;
+    }
+
+    public static void setCurrent(User current) {
+        User.current = current;
+    }
 
     public String getEmail() {
         return email;

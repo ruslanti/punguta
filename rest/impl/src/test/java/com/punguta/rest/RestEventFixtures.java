@@ -1,13 +1,13 @@
 package com.punguta.rest;
 
-import com.punguta.services.events.expense.ExpenseCreatedEvent;
-import com.punguta.services.events.expense.ExpenseDetail;
-import com.punguta.services.events.expense.ExpenseReadEvent;
+import static com.punguta.rest.RestDetailsFixture.generateExpenseDetail;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.punguta.rest.RestDetailsFixture.generateExpenseDetail;
+import com.punguta.services.events.expense.ExpenseCreatedEvent;
+import com.punguta.services.events.expense.ExpenseDetail;
+import com.punguta.services.events.expense.ExpenseReadEvent;
 
 /**
  * Created by ruslanti on 21.05.2014.
@@ -27,6 +27,6 @@ public class RestEventFixtures {
     }
 
     public static String standardExpenseJSON() {
-        return "{\"accountId\":1,\"posted\":1400707218479,\"note\":\"Note\",\"splits\":[{\"value\":null,\"currency\":null},{\"value\":null,\"currency\":null}]}";
+        return "{\"posted\":1400707218479,\"note\":\"Note\",\"splits\":[{\"value\":null,\"currency\":null},{\"value\":null,\"currency\":null}]}";
     }
 }

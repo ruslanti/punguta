@@ -1,24 +1,27 @@
 package com.punguta.services.events.expense;
 
-import com.punguta.services.events.RequestReadEvent;
+import java.util.Calendar;
+import java.util.Date;
 
-import java.time.Period;
+import com.punguta.services.events.RequestReadEvent;
 
 /**
  * Created by ruslanti on 21.05.2014.
  */
 public class ExpenseRequestReadEvent extends RequestReadEvent{
-    private final Period period;
+    private final Date since;
 
     public ExpenseRequestReadEvent() {
-        this.period = Period.ofWeeks(1);
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.WEEK_OF_YEAR, -1);
+        this.since = now.getTime();
     }
 
-    public ExpenseRequestReadEvent(Period period) {
-        this.period = period;
+    public ExpenseRequestReadEvent(Date period) {
+        this.since = period;
     }
 
-    public Period getPeriod() {
-        return period;
+    public Date getSince() {
+        return since;
     }
 }

@@ -14,19 +14,19 @@ import javax.persistence.OneToMany;
 @Entity
 public class Transaction extends AbstractEntity {
 
-    private Date date;
+    private Date posted;
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Split> splits;
 
     private String note;
 
-    public Date getDate() {
-        return date;
+    public Date getPosted() {
+        return posted;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setPosted(Date posted) {
+        this.posted = posted;
     }
 
     public Set<Split> getSplits() {
@@ -48,7 +48,7 @@ public class Transaction extends AbstractEntity {
     @Override
     public String toString() {
         return "Transaction{" +
-                "date=" + date +
+                "posted=" + posted +
                 ", splits=" + splits +
                 ", note='" + note + '\'' +
                 '}';

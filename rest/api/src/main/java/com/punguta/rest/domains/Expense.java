@@ -25,7 +25,7 @@ public class Expense {
     public static Expense fromExpenseDetail(ExpenseDetail expenseDetail) {
         Expense expense = new Expense();
         BeanUtils.copyProperties(expenseDetail, expense, "splits");
-        Set<SplitDetail> expenseDetailSplits = expenseDetail.getSplitDetails();
+        Set<SplitDetail> expenseDetailSplits = expenseDetail.getExpenseSplits();
         expense.splits = expenseDetailSplits.stream().map(
                 Split::fromSplitDetail).collect(Collectors.toSet());
         return expense;
@@ -34,7 +34,7 @@ public class Expense {
     public ExpenseDetail toExpenseDetail() {
         ExpenseDetail expenseDetail = new ExpenseDetail();
         BeanUtils.copyProperties(this, expenseDetail, "splits");
-        expenseDetail.setSplitDetails(splits.stream().map(
+        expenseDetail.setExpenseSplits(splits.stream().map(
                 Split::toSplitDetail).collect(Collectors.toSet()));
         return expenseDetail;
     }

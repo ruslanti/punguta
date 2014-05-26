@@ -1,8 +1,14 @@
 package com.punguta.rest;
 
-import com.punguta.services.ExpenseService;
-import com.punguta.services.events.expense.ExpenseCreateEvent;
-import com.punguta.services.events.expense.ExpenseRequestReadEvent;
+import static com.punguta.rest.RestEventFixtures.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -12,18 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.UUID;
-
-import static com.punguta.rest.RestEventFixtures.expenseCreated;
-import static com.punguta.rest.RestEventFixtures.generateExpenses;
-import static com.punguta.rest.RestEventFixtures.standardExpenseJSON;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import com.punguta.services.ExpenseService;
+import com.punguta.services.events.expense.ExpenseCreateEvent;
+import com.punguta.services.events.expense.ExpenseRequestReadEvent;
 
 /**
  * Created by ruslanti on 21.05.2014.

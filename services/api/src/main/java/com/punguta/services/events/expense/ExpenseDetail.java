@@ -12,33 +12,13 @@ import com.punguta.jpa.domains.Transaction;
  */
 public class ExpenseDetail {
 
-    private Long userId;
-
-    private Long assetAccountId;
-
     private Date posted;
 
     private String note;
 
     private SplitDetail assetSplit;
 
-    private Set<SplitDetail> splitDetails;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getAssetAccountId() {
-        return assetAccountId;
-    }
-
-    public void setAssetAccountId(Long assetAccountId) {
-        this.assetAccountId = assetAccountId;
-    }
+    private Set<SplitDetail> expenseSplits;
 
     public Date getPosted() {
         return posted;
@@ -56,12 +36,12 @@ public class ExpenseDetail {
         this.note = note;
     }
 
-    public Set<SplitDetail> getSplitDetails() {
-        return splitDetails;
+    public Set<SplitDetail> getExpenseSplits() {
+        return expenseSplits;
     }
 
-    public void setSplitDetails(Set<SplitDetail> splitDetails) {
-        this.splitDetails = splitDetails;
+    public void setExpenseSplits(Set<SplitDetail> expenseSplits) {
+        this.expenseSplits = expenseSplits;
     }
 
     public SplitDetail getAssetSplit() {
@@ -73,26 +53,26 @@ public class ExpenseDetail {
     }
 
     public void addSplitDetail(SplitDetail splitDetail) {
-        if (splitDetails == null) {
-            splitDetails = new HashSet<>();
+        if (expenseSplits == null) {
+            expenseSplits = new HashSet<>();
         }
-        splitDetails.add(splitDetail);
+        expenseSplits.add(splitDetail);
     }
 
     public Transaction toTransaction() {
         final Transaction transaction = new Transaction();
-        transaction.setDate(posted);
+        transaction.setPosted(posted);
         transaction.setNote(note);
-        transaction.setSplits(splitDetails.stream().map(
+        transaction.setSplits(expenseSplits.stream().map(
                 SplitDetail::toSplit).collect(Collectors.toSet()));
         return transaction;
     }
 
     public static ExpenseDetail fromTransaction(Transaction transaction) {
         final ExpenseDetail expenseDetail = new ExpenseDetail();
-        expenseDetail.setPosted(transaction.getDate());
+        expenseDetail.setPosted(transaction.getPosted());
         expenseDetail.setNote(transaction.getNote());
-        expenseDetail.setSplitDetails(transaction.getSplits().stream().map(
+        expenseDetail.setExpenseSplits(transaction.getSplits().stream().map(
                 SplitDetail::fromSplit).collect(Collectors.toSet()));
         return expenseDetail;
     }

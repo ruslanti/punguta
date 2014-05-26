@@ -20,14 +20,16 @@ public class RestDetailsFixture {
 
     public static ExpenseDetail generateExpenseDetail() {
         ExpenseDetail expenseDetail = new ExpenseDetail();
-        expenseDetail.setAssetAccountId(1L);
+        SplitDetail assetSplit = new SplitDetail();
+        assetSplit.setAccountId(1L);
+        expenseDetail.setAssetSplit(assetSplit);
         expenseDetail.setPosted(new Date());
         expenseDetail.setNote("Note");
         Set<SplitDetail> splitDetails = new HashSet<>(2);
         for (int i = 0; i < 2; i++) {
             splitDetails.add(generateSplitDetail());
         }
-        expenseDetail.setSplitDetails(splitDetails);
+        expenseDetail.setExpenseSplits(splitDetails);
         return expenseDetail;
     }
 }
