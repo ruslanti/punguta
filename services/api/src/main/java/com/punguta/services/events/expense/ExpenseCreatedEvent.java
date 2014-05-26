@@ -1,6 +1,7 @@
 package com.punguta.services.events.expense;
 
 import com.punguta.services.events.CreatedEvent;
+import com.punguta.services.events.details.ExpenseDetail;
 
 /**
  * Created by ruslanti on 21.05.2014.

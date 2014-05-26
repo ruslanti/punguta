@@ -33,7 +33,7 @@ public class AccountFactory {
     }
 
     public Asset createAsset(Commodity commodity) {
-        return createAsset("WL", "Income", "Generic wallet account", commodity);
+        return createAsset("WL", "Asset", "Generic wallet account", commodity);
     }
 
     public Income createIncome(Commodity commodity) {

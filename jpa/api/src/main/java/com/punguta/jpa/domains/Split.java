@@ -1,15 +1,15 @@
 package com.punguta.jpa.domains;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * User: ruslan
  * Date: 5/15/14
  */
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("split")
 public class Split extends AbstractEntity {
 
     private int qty;

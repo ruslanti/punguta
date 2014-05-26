@@ -1,24 +1,16 @@
 package com.punguta.services;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.punguta.jpa.domains.*;
+import com.punguta.services.events.details.ExpenseDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.punguta.jpa.domains.Account;
-import com.punguta.jpa.domains.Asset;
-import com.punguta.jpa.domains.Book;
-import com.punguta.jpa.domains.Category;
-import com.punguta.jpa.domains.Expense;
-import com.punguta.jpa.domains.Split;
-import com.punguta.jpa.domains.Transaction;
-import com.punguta.jpa.domains.User;
 import com.punguta.jpa.repositories.AccountRepository;
 import com.punguta.jpa.repositories.BookRepository;
 import com.punguta.jpa.repositories.CategoryRepository;
@@ -28,12 +20,11 @@ import com.punguta.services.events.expense.ExpenseCreateEvent;
 import com.punguta.services.events.expense.ExpenseCreatedEvent;
 import com.punguta.services.events.expense.ExpenseDeleteEvent;
 import com.punguta.services.events.expense.ExpenseDeletedEvent;
-import com.punguta.services.events.expense.ExpenseDetail;
 import com.punguta.services.events.expense.ExpenseReadEvent;
 import com.punguta.services.events.expense.ExpenseRequestReadEvent;
 import com.punguta.services.events.expense.ExpenseUpdateEvent;
 import com.punguta.services.events.expense.ExpenseUpdatedEvent;
-import com.punguta.services.events.expense.SplitDetail;
+import com.punguta.services.events.details.SplitDetail;
 
 /**
  * Created by ruslanti on 21.05.2014.
@@ -62,32 +53,32 @@ public class ExpenseServiceImpl implements ExpenseService{
         final ExpenseDetail expenseDetail = expenseCreateEvent.getDetail();
 
         final Book book = bookRepository.findByUserId(User.getCurrent().getId());
-        final Account assetAccount = accountRepository.findOne(expenseDetail.getAssetSplit().getAccountId());
+        final Account assetAccount = accountRepository.findOne(expenseDetail.getWithdrawalDetail().getAccountId());
         final Expense expenseAccount = book.getExpense();
 
-        final Transaction transaction = expenseDetail.toTransaction();
+        Transaction transaction = expenseDetail.toTransaction();
 
         int assetValue = 0;
 
-        for (Split split : transaction.getSplits()) {
-            split.setAccount(expenseAccount);
-            final Category category = categoryRepository.findByName(split.getCategoryName());
-            split.setCategory(category);
-            assetValue += split.getValue();
+        for (Split deposit : transaction.getSplits()) {
+            deposit.setAccount(expenseAccount);
+            final Category category = categoryRepository.findByName(deposit.getCategoryName());
+            deposit.setCategory(category);
+            assetValue += deposit.getValue();
         }
 
-        final Split assetSplit = new Split();
-        assetSplit.setAccount(assetAccount);
-        assetSplit.setQty(assetValue);
-        assetSplit.setValue(assetValue);
-        transaction.getSplits().add(assetSplit);
+        final Withdrawal withdrawal = new Withdrawal();
+        withdrawal.setAccount(assetAccount);
+        withdrawal.setQty(assetValue);
+        withdrawal.setValue(assetValue);
+        transaction.getSplits().add(withdrawal);
 
-        transactionRepository.save(transaction);
+        transaction = transactionRepository.save(transaction);
 
         final ExpenseDetail returnExpenseDetail = ExpenseDetail.fromTransaction(transaction);
-        final SplitDetail assetSplitDetail = new SplitDetail();
-        assetSplitDetail.setAccountId(assetAccount.getId());
-        returnExpenseDetail.setAssetSplit(assetSplitDetail);
+/*        final SplitDetail withdrawalDetail = new SplitDetail();
+        withdrawalDetail.setAccountId(assetAccount.getId());
+        returnExpenseDetail.setWithdrawalDetail(withdrawalDetail);*/
 
         return new ExpenseCreatedEvent(transaction.getId(), returnExpenseDetail);
     }
@@ -117,19 +108,23 @@ public class ExpenseServiceImpl implements ExpenseService{
             ExpenseDetail expenseDetail = new ExpenseDetail();
             expenseDetail.setPosted(transaction.getPosted());
             expenseDetail.setNote(transaction.getNote());
+
+            Set<SplitDetail> depositDetails = new HashSet<>(transaction.getSplits().size());
             for (Split split : transaction.getSplits()) {
                 SplitDetail splitDetail = new SplitDetail();
-                splitDetail.setNote(split.getNote());
-                if (split.getAccount() instanceof Asset) {
+                splitDetail.setValue(split.getValue());
+                if (split instanceof Withdrawal) {
                     splitDetail.setValue(split.getValue());
                     splitDetail.setAccountId(split.getAccount().getId());
-                    expenseDetail.setAssetSplit(splitDetail);
-                } else {
-                    splitDetail.setValue(split.getValue());
+                    expenseDetail.setWithdrawalDetail(splitDetail);
+                } else if (split instanceof Deposit) {
                     splitDetail.setCategoryName(split.getCategory().getName());
-                    expenseDetail.addSplitDetail(splitDetail);
+                    splitDetail.setNote(split.getNote());
+                    depositDetails.add(splitDetail);
                 }
             }
+
+            expenseDetail.setDepositDetails(depositDetails);
             expenseDetails.add(expenseDetail);
         }
 

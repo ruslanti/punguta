@@ -1,6 +1,7 @@
 package com.punguta.services.events.expense;
 
 import com.punguta.services.events.ReadEvent;
+import com.punguta.services.events.details.ExpenseDetail;
 
 import java.util.List;
 
@@ -10,8 +11,8 @@ import java.util.List;
 public class ExpenseReadEvent extends ReadEvent{
     private final List<ExpenseDetail> expenseDetails;
 
-    public ExpenseReadEvent(List<ExpenseDetail> expenseDetails) {
-        this.expenseDetails = expenseDetails;
+    public ExpenseReadEvent(List<ExpenseDetail> transactionDetails) {
+        this.expenseDetails = transactionDetails;
     }
 
     public List<ExpenseDetail> getDetails() {

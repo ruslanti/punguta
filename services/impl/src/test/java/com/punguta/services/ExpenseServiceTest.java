@@ -6,9 +6,11 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.punguta.services.events.details.ExpenseDetail;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +27,9 @@ import com.punguta.jpa.repositories.UserRepository;
 import com.punguta.services.config.ServicesConfiguration;
 import com.punguta.services.events.expense.ExpenseCreateEvent;
 import com.punguta.services.events.expense.ExpenseCreatedEvent;
-import com.punguta.services.events.expense.ExpenseDetail;
 import com.punguta.services.events.expense.ExpenseReadEvent;
 import com.punguta.services.events.expense.ExpenseRequestReadEvent;
-import com.punguta.services.events.expense.SplitDetail;
+import com.punguta.services.events.details.SplitDetail;
 import com.punguta.services.exceptions.PungutaException;
 
 /**
@@ -75,16 +76,18 @@ public class ExpenseServiceTest {
         expenseDetail.setPosted(posted);
 
         // asset split (only account id)
-        final SplitDetail assetSplit = new SplitDetail();
-        assetSplit.setAccountId(assetId);
-        expenseDetail.setAssetSplit(assetSplit);
+        final SplitDetail withdrawal = new SplitDetail();
+        withdrawal.setAccountId(assetId);
+        expenseDetail.setWithdrawalDetail(withdrawal);
 
         // expense splits: value, category and note
-        final SplitDetail expenseSplit = new SplitDetail();
-        expenseSplit.setNote("Split note");
-        expenseSplit.setValue(10);
-        expenseSplit.setCategoryName("Alimente");
-        expenseDetail.addSplitDetail(expenseSplit);
+        Set<SplitDetail> depositSplits = new HashSet<>(1);
+        final SplitDetail deposit = new SplitDetail();
+        deposit.setNote("Split note");
+        deposit.setValue(10);
+        deposit.setCategoryName("Alimente");
+        depositSplits.add(deposit);
+        expenseDetail.setDepositDetails(depositSplits);
 
         final ExpenseCreatedEvent expenseCreatedEvent = expenseService.create(new ExpenseCreateEvent(expenseDetail));
 
@@ -97,24 +100,24 @@ public class ExpenseServiceTest {
         final ExpenseReadEvent list = expenseService.list(expenseRequestReadEvent);
 
         assertNotNull(list);
-        final List<ExpenseDetail> expenseDetails = list.getDetails();
-        assertEquals(1, expenseDetails.size());
+        final List<ExpenseDetail> transactionDetails = list.getDetails();
+        assertEquals(1, transactionDetails.size());
 
-        final ExpenseDetail responseDetail = expenseDetails.get(0);
+        final ExpenseDetail responseDetail = transactionDetails.get(0);
 
         assertEquals(posted, responseDetail.getPosted());
         assertEquals("firstExpense", responseDetail.getNote());
 
-        final SplitDetail assetSplit1 = responseDetail.getAssetSplit();
-        assertNotNull(assetSplit1);
-        assertEquals(Integer.valueOf(10), Integer.valueOf(assetSplit1.getValue()));
-        assertNotNull(assetSplit1.getAccountId());
-        assertEquals(assetId, assetSplit1.getAccountId());
+        final SplitDetail withdrawalDetail = responseDetail.getWithdrawalDetail();
+        assertNotNull(withdrawalDetail);
+        assertEquals(10, withdrawalDetail.getValue());
+        assertNotNull(withdrawalDetail.getAccountId());
+        assertEquals(assetId, withdrawalDetail.getAccountId());
 
-        final Set<SplitDetail> expenseSplits = responseDetail.getExpenseSplits();
-        assertEquals(1, expenseSplits.size());
-        for (SplitDetail split : expenseSplits) {
-            assertEquals(Integer.valueOf(10), split.getValue());
+        final Set<SplitDetail> depositDetails = responseDetail.getDepositDetails();
+        assertEquals(1, depositDetails.size());
+        for (SplitDetail split : depositDetails) {
+            assertEquals(10, split.getValue());
             assertEquals("Alimente", split.getCategoryName());
             assertEquals("Split note", split.getNote());
         }

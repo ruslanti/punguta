@@ -1,12 +1,14 @@
-package com.punguta.services.events.expense;
+package com.punguta.services.events.details;
 
+import com.punguta.jpa.domains.Deposit;
 import com.punguta.jpa.domains.Split;
+import com.punguta.jpa.domains.Withdrawal;
 
 /**
  * Created by ruslanti on 21.05.2014.
  */
 public class SplitDetail {
-    private Integer value;
+    private int value;
 
     private String categoryName;
 
@@ -22,11 +24,11 @@ public class SplitDetail {
         this.accountId = accountId;
     }
 
-    public Integer getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
@@ -46,8 +48,8 @@ public class SplitDetail {
         this.categoryName = categoryName;
     }
 
-    public Split toSplit() {
-        final Split split = new Split();
+    public Deposit toDeposit() {
+        final Deposit split = new Deposit();
         split.setValue(value);
         split.setQty(value);
         split.setNote(note);
@@ -55,7 +57,24 @@ public class SplitDetail {
         return split;
     }
 
-    public static SplitDetail fromSplit(Split split) {
+    public static SplitDetail fromDeposit(Deposit split) {
+        final SplitDetail splitDetail = new SplitDetail();
+        splitDetail.setCategoryName(split.getCategoryName());
+        splitDetail.setValue(split.getValue());
+        splitDetail.setNote(split.getNote());
+        return splitDetail;
+    }
+
+    public Withdrawal toWithdrawal() {
+        final Withdrawal split = new Withdrawal();
+        split.setValue(value);
+        split.setQty(value);
+        split.setNote(note);
+        split.setCategoryName(categoryName);
+        return split;
+    }
+
+    public static SplitDetail fromWithdrawal(Withdrawal split) {
         final SplitDetail splitDetail = new SplitDetail();
         splitDetail.setCategoryName(split.getCategoryName());
         splitDetail.setValue(split.getValue());

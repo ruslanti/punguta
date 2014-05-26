@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.punguta.services.events.details.ExpenseDetail;
 import org.springframework.beans.BeanUtils;
 
-import com.punguta.services.events.expense.ExpenseDetail;
-import com.punguta.services.events.expense.SplitDetail;
+import com.punguta.services.events.details.SplitDetail;
 
 /**
  * Created by ruslanti on 21.05.2014.
@@ -25,7 +25,7 @@ public class Expense {
     public static Expense fromExpenseDetail(ExpenseDetail expenseDetail) {
         Expense expense = new Expense();
         BeanUtils.copyProperties(expenseDetail, expense, "splits");
-        Set<SplitDetail> expenseDetailSplits = expenseDetail.getExpenseSplits();
+        Set<SplitDetail> expenseDetailSplits = expenseDetail.getDepositDetails();
         expense.splits = expenseDetailSplits.stream().map(
                 Split::fromSplitDetail).collect(Collectors.toSet());
         return expense;
@@ -34,7 +34,7 @@ public class Expense {
     public ExpenseDetail toExpenseDetail() {
         ExpenseDetail expenseDetail = new ExpenseDetail();
         BeanUtils.copyProperties(this, expenseDetail, "splits");
-        expenseDetail.setExpenseSplits(splits.stream().map(
+        expenseDetail.setDepositDetails(splits.stream().map(
                 Split::toSplitDetail).collect(Collectors.toSet()));
         return expenseDetail;
     }

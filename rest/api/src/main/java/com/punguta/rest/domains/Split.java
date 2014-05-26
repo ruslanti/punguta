@@ -2,13 +2,13 @@ package com.punguta.rest.domains;
 
 import org.springframework.beans.BeanUtils;
 
-import com.punguta.services.events.expense.SplitDetail;
+import com.punguta.services.events.details.SplitDetail;
 
 /**
  * Created by ruslanti on 21.05.2014.
  */
 public class Split {
-    private Integer value;
+    private int value;
 
     private String currency;
 

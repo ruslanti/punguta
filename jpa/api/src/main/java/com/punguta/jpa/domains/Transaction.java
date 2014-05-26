@@ -29,20 +29,20 @@ public class Transaction extends AbstractEntity {
         this.posted = posted;
     }
 
-    public Set<Split> getSplits() {
-        return splits;
-    }
-
-    public void setSplits(Set<Split> splits) {
-        this.splits = splits;
-    }
-
     public String getNote() {
         return note;
     }
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Set<Split> getSplits() {
+        return splits;
+    }
+
+    public void setSplits(Set<Split> splits) {
+        this.splits = splits;
     }
 
     @Override

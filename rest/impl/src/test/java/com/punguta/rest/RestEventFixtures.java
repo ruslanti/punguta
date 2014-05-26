@@ -5,8 +5,8 @@ import static com.punguta.rest.RestDetailsFixture.generateExpenseDetail;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.punguta.services.events.details.ExpenseDetail;
 import com.punguta.services.events.expense.ExpenseCreatedEvent;
-import com.punguta.services.events.expense.ExpenseDetail;
 import com.punguta.services.events.expense.ExpenseReadEvent;
 
 /**
@@ -19,11 +19,11 @@ public class RestEventFixtures {
     }
 
     public static ExpenseReadEvent generateExpenses(int num) {
-        List<ExpenseDetail> expenseDetailList = new ArrayList<ExpenseDetail>(num);
+        List<ExpenseDetail> expenseDetails = new ArrayList<ExpenseDetail>(num);
         for (int i = 0; i < num; i++) {
-            expenseDetailList.add(generateExpenseDetail());
+            expenseDetails.add(generateExpenseDetail());
         }
-        return new ExpenseReadEvent(expenseDetailList);
+        return new ExpenseReadEvent(expenseDetails);
     }
 
     public static String standardExpenseJSON() {
