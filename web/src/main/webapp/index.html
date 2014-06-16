@@ -10,6 +10,9 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -63,6 +66,8 @@
 </head>
 <body>
 
+<script type="text/x-handlebars">
+
 <!-- Header -->
 <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
     <div class="container">
@@ -93,6 +98,7 @@
 <!-- Main -->
 <div class="container">
 <div class="row">
+
 <!-- Left column -->
 <div class="col-md-3">
 	<div class="btn-group btn-group-justified">
@@ -100,7 +106,7 @@
         <a href="#" class="btn btn-primary col-sm-3"><i class="glyphicon glyphicon-cloud"></i><br>Cheltuielă</a>
         <a href="#" class="btn btn-primary col-sm-3"><i class="glyphicon glyphicon-cog"></i><br>Transfer</a>
     </div>
-<hr/>
+    <hr/>
     <ul class="list-unstyled">
         <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#userMenu">
             <h5>Iunie 2014</h5>
@@ -146,16 +152,17 @@
 
 </div><!-- /col-3 -->
 
+<!-- main menu -->
 <div class="col-md-9">
 <!-- column 2 -->
 <ul class="nav nav-tabs nav-justified">
-    <li class="active"><a href="#">Home</a></li>
-    <li><a href="#">Venituri</a></li>
-    <li><a href="#">Cheltuieli</a></li>
-    <li><a href="#">Facturi</a></li>
-    <li><a href="#">Imprumuturi</a></li>
-    <li><a href="#">Transferuri</a></li>
-    <li><a href="#">Rapoarte</a></li>
+    <li class="active">{{#link-to 'index'}}Home{{/link-to}}</li>
+    <li>{{#link-to 'incomes'}}Venituri{{/link-to}}</li>
+    <li>{{#link-to 'expenses'}}Cheltuieli{{/link-to}}</li>
+    <li>{{#link-to 'bills'}}Facturi{{/link-to}}</li>
+    <li>{{#link-to 'loans'}}Imprumuturi{{/link-to}}</li>
+    <li>{{#link-to 'transfers'}}Transferuri{{/link-to}}</li>
+    <li>{{#link-to 'reports'}}Rapoarte{{/link-to}}</li>
     <li><a href="#">Obiective</a></li>
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
@@ -167,17 +174,38 @@
 
 <br/>
 
+{{outlet}}
+
+
+</div><!--/col-span-9-->
+</div>
+</div>
+<!-- /Main -->
+
+
+
+<footer class="text-center">This Bootstrap 3 dashboard layout is compliments of <a href="http://www.bootply.com/85850"><strong>Bootply.com</strong></a></footer>
+
+</script>
+
+<script type="text/x-handlebars" id="components/expense-record">
+
+</script>
+
+<script type="text/x-handlebars" id="index">
 <div class="row">
     <!-- center left-->
     <div class="col-md-6">
         <div class="panel panel-warning">
             <div class="panel-heading"><h4>Cheltuieli recente</h4></div>
+            {{input type="text" id="new-expense" placeholder="What needs to be done?"
+              value=newExpense action="createExpense"}}
             <ul class="list-group">
-                <li class="list-group-item"><small>4 iunie 2014</small><div class="pull-right">-1,00 MDL</div><br/>Nota: Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
+                {{#each}}
+                <li class="list-group-item">
+                    <small>{{posted}}</small><div class="pull-right">{{value}}</div><br/>Nota: {{note}}
+                </li>
+                {{/each}}
             </ul>
         </div><!--/panel-->
     </div><!--/col-->
@@ -205,20 +233,46 @@
         </div>
 
     </div><!--/col-span-6-->
-
 </div><!--/row-->
 
-</div><!--/col-span-9-->
-</div>
-</div>
-<!-- /Main -->
+</script>
 
-<footer class="text-center">This Bootstrap 3 dashboard layout is compliments of <a href="http://www.bootply.com/85850"><strong>Bootply.com</strong></a></footer>
+<script type="text/x-handlebars" id="incomes">
+    incomes
+</script>
+
+<script type="text/x-handlebars" id="expenses">
+    expenses
+</script>
+
+<script type="text/x-handlebars" id="bills">
+    bills
+</script>
+
+<script type="text/x-handlebars" id="loans">
+    loans
+</script>
+
+<script type="text/x-handlebars" id="transfers">
+    transfers
+</script>
+
+<script type="text/x-handlebars" id="reports">
+    reports
+</script>
+
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
+
+<script src="js/libs/handlebars-1.1.2.js"></script>
+<script src="js/libs/ember-1.5.1.js"></script>
+<script src="js/libs/ember-data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/models/expense.js"></script>
+<script src="js/controllers/expenses_controller.js"></script>
 
 </body>
 </html>
