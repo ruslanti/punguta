@@ -1,8 +1,11 @@
 package com.punguta.jpa.repositories;
 
+import com.punguta.jpa.domains.Account;
 import org.springframework.data.repository.CrudRepository;
 
 import com.punguta.jpa.domains.Split;
+
+import java.util.Date;
 
 /**
  * User: ruslan

@@ -3,10 +3,7 @@ package com.punguta.jpa.domains;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 /**
  * User: ruslan
@@ -21,7 +18,7 @@ public class Book extends AbstractEntity {
     @ManyToOne
     private Commodity defaultCommodity;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Asset> assets;
 
     @OneToOne

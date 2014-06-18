@@ -1,5 +1,6 @@
 package com.punguta.services;
 
+import java.time.Period;
 import java.util.*;
 
 import javax.annotation.Resource;
@@ -52,7 +53,7 @@ public class ExpenseServiceImpl implements ExpenseService{
     public ExpenseCreatedEvent create(ExpenseCreateEvent expenseCreateEvent) {
         final ExpenseDetail expenseDetail = expenseCreateEvent.getDetail();
 
-        final Book book = bookRepository.findByUserId(User.getCurrent().getId());
+        final Book book = bookRepository.findByUser(User.getCurrent());
         final Account assetAccount = accountRepository.findOne(expenseDetail.getWithdrawalDetail().getAccountId());
         final Expense expenseAccount = book.getExpense();
 
@@ -97,7 +98,7 @@ public class ExpenseServiceImpl implements ExpenseService{
     @Transactional
     public ExpenseReadEvent list(ExpenseRequestReadEvent expenseRequestReadEvent) {
         final List<ExpenseDetail> expenseDetails = new ArrayList<>();
-        final Book book = bookRepository.findByUserId(User.getCurrent().getId());
+        final Book book = bookRepository.findByUser(User.getCurrent());
         final Expense expenseAccount = book.getExpense();
 
         final Date since = expenseRequestReadEvent.getSince();

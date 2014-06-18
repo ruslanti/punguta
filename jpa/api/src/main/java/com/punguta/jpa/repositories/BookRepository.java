@@ -1,5 +1,6 @@
 package com.punguta.jpa.repositories;
 
+import com.punguta.jpa.domains.User;
 import org.springframework.data.repository.CrudRepository;
 
 import com.punguta.jpa.domains.Book;
@@ -10,5 +11,5 @@ import com.punguta.jpa.domains.Book;
  */
 public interface BookRepository extends CrudRepository<Book, Long>{
 
-    public Book findByUserId(Long userId);
+    public Book findByUser(User user);
 }

@@ -3,8 +3,11 @@ package com.punguta.services;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.punguta.services.events.details.TotalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,5 +90,29 @@ public class BookServiceImpl implements BookService {
     @Override
     public void updateAccount(Account account) {
         accountRepository.save(account);
+    }
+
+    @Override
+    public TotalDetails findTotals() {
+        final Book book = bookRepository.findByUser(User.getCurrent());
+        Map<Long, Account> bookAccounts = new HashMap<>();
+        bookAccounts.put(book.getExpense().getId(), book.getExpense());
+        bookAccounts.put(book.getIncome().getId(), book.getIncome());
+        bookAccounts.put(book.getLoan().getId(), book.getLoan());
+        bookAccounts.put(book.getLiability().getId(), book.getLiability());
+        for (Asset asset : book.getAssets()) {
+            bookAccounts.put(asset.getId(), asset);
+        }
+
+        Map<Long, Long> totalsForAccounts = accountRepository.findTotalsForAccountIds(bookAccounts.keySet());
+
+        TotalDetails totalDetails = new TotalDetails();
+        if (totalsForAccounts != null) {
+            for (Map.Entry<Long, Long> entry : totalsForAccounts.entrySet()) {
+                totalDetails.addTotal(bookAccounts.get(entry.getKey()), entry.getValue());
+            }
+        }
+
+        return totalDetails;
     }
 }

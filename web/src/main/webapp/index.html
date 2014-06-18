@@ -99,6 +99,21 @@
 <div class="container">
 <div class="row">
 
+{{outlet}}
+
+</div>
+</div>
+<!-- /Main -->
+
+
+
+<footer class="text-center">This Bootstrap 3 dashboard layout is compliments of <a href="http://www.bootply.com/85850"><strong>Bootply.com</strong></a></footer>
+
+</script>
+
+
+<script type="text/x-handlebars" id="index">
+
 <!-- Left column -->
 <div class="col-md-3">
 	<div class="btn-group btn-group-justified">
@@ -107,34 +122,41 @@
         <a href="#" class="btn btn-primary col-sm-3"><i class="glyphicon glyphicon-cog"></i><br>Transfer</a>
     </div>
     <hr/>
-    <ul class="list-unstyled">
-        <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#userMenu">
-            <h5>Iunie 2014</h5>
-        </a>
-            <ul class="list-unstyled collapse in" id="userMenu">
-                <li><a href="#"><i class="glyphicon glyphicon-home"></i> Venituri</a><span class="pull-right">4.581,60 MDL</span></li>
-                <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> Cheltuieli</a><span class="pull-right">-2.964,30 MDL</span></li>
-                <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Balanță</a><span class="pull-right">1.617,30 MDL</span></li>
+    
+	<ul class="list-unstyled">
+		<li class="nav-header">
+			<a href="#" data-toggle="collapse" data-target="#status">
+	            <h5>Iunie 2014</h5>
+	        </a>
+            <ul class="list-unstyled collapse in" id="status">
+				{{#with total}}
+                <li><a href="#"><i class="glyphicon glyphicon-home"></i> Venituri</a><span class="pull-right">{{format-currency income 'MDL'}}</span></li>
+                <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> Cheltuieli</a><span class="pull-right">{{format-currency expense 'MDL'}}</span></li>
+                <li><a href="#"><i class="glyphicon glyphicon-cog"></i> Balanță</a><span class="pull-right">{{format-currency balance 'MDL'}}</span></li>
+				{{/with}}
             </ul>
         </li>
-        <li class="nav-header"> <a href="#" data-toggle="collapse" data-target="#menu2">
-            <h5>Conturile Mele</h5>
-        </a>
-            <ul class="list-unstyled collapse in" id="menu2">
-                <li><a href="#"><i class="glyphicon glyphicon-home"></i> Portofel</a><span class="pull-right">187,15 MDL</span></li>
-                <li><a href="#"><i class="glyphicon glyphicon-envelope"></i> Mobias Card</a><span class="pull-right">59,09 MDL</span></li>
-		<li><a href="#"><i class="glyphicon glyphicon-cog"></i> MAIB Card Debit</a><span class="pull-right">5.014,18 MDL</span></li>
-                <li><a href="#"><i class="glyphicon glyphicon-cog"></i> MAIB Card Credit</a><span class="pull-right">3.056,66 MDL</span></li>
+        <li class="nav-header"> 
+			<a href="#" data-toggle="collapse" data-target="#assets">
+	            <h5>Conturile Mele</h5>
+	        </a>
+            <ul class="list-unstyled collapse in" id="assets">
+				{{#each assets}}
+                <li><a href="#"><i class="glyphicon glyphicon-home"></i> {{name}}</a><span class="pull-right">{{format-currency amount currency}}</span></li>
+				{{/each}}
             </ul>
         </li>
+
         <li class="nav-header">
-            <a href="#" data-toggle="collapse" data-target="#menu3">
+            <a href="#" data-toggle="collapse" data-target="#loans">
                 <h5>Împrumuturi</h5>
             </a>
 
-            <ul class="list-unstyled collapse in" id="menu3">
-                <li><a href="#"><i class="glyphicon glyphicon-circle"></i> Oferite</a><span class="pull-right">0,00 MDL</span></li>
-                <li><a href="#"><i class="glyphicon glyphicon-circle"></i> Primite</a><span class="pull-right">0,00 MDL</span></li>
+            <ul class="list-unstyled collapse in" id="loans">
+				{{#with loans}}
+                <li><a href="#"><i class="glyphicon glyphicon-circle"></i> Oferite</a><span class="pull-right">{{format-currency loan 'MDL'}}</span></li>
+                <li><a href="#"><i class="glyphicon glyphicon-circle"></i> Primite</a><span class="pull-right">{{format-currency liability 'MDL'}}</span></li>
+				{{/with}}
             </ul>
         </li>
     </ul>
@@ -172,38 +194,31 @@
   </li>
 </ul>
 
+{{#if isEditing}}
+<div class="row">
+	<br/>
+	<div class="col-md-12">
+		<div class="panel panel-warning">
+			<div class="panel-heading"><h4>Add expense</h4></div>
+    		<p>{{input type="text" value=excerpt}}</p>
+			{{view Ember.Select content=names}}
+    		<p>{{textarea value=body}}</p>
+			<button {{action 'doneEditing'}}>Done</button>
+		</div>
+	</div>
+</div>
+{{/if}}
+
 <br/>
-
-{{outlet}}
-
-
-</div><!--/col-span-9-->
-</div>
-</div>
-<!-- /Main -->
-
-
-
-<footer class="text-center">This Bootstrap 3 dashboard layout is compliments of <a href="http://www.bootply.com/85850"><strong>Bootply.com</strong></a></footer>
-
-</script>
-
-<script type="text/x-handlebars" id="components/expense-record">
-
-</script>
-
-<script type="text/x-handlebars" id="index">
 <div class="row">
     <!-- center left-->
     <div class="col-md-6">
         <div class="panel panel-warning">
             <div class="panel-heading"><h4>Cheltuieli recente</h4></div>
-            {{input type="text" id="new-expense" placeholder="What needs to be done?"
-              value=newExpense action="createExpense"}}
             <ul class="list-group">
-                {{#each}}
+                {{#each expenses}}
                 <li class="list-group-item">
-                    <small>{{posted}}</small><div class="pull-right">{{value}}</div><br/>Nota: {{note}}
+                    <small>{{format-date posted}}</small><div class="pull-right">{{format-currency value 'MDL'}}</div><br/>Nota: {{note}}
                 </li>
                 {{/each}}
             </ul>
@@ -234,6 +249,7 @@
 
     </div><!--/col-span-6-->
 </div><!--/row-->
+</div><!--/col-span-9-->
 
 </script>
 
@@ -266,12 +282,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.0.2/js/bootstrap-datepicker.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
 
 <script src="js/libs/handlebars-1.1.2.js"></script>
 <script src="js/libs/ember-1.5.1.js"></script>
 <script src="js/libs/ember-data.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+<script src="http://rsvpjs-builds.s3.amazonaws.com/rsvp-latest.js"></script>
+<script src="js/libs/accounting.min.js"></script>
+
 <script src="js/app.js"></script>
-<script src="js/models/expense.js"></script>
+<script src="js/models/fixtures.js"></script>
 <script src="js/controllers/expenses_controller.js"></script>
 
 </body>

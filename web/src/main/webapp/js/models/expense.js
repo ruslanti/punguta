@@ -7,20 +7,20 @@ App.Expense = DS.Model.extend({
 App.Expense.FIXTURES = [
  {
    id: 1,
-   posted: '01/01/2014',
-   value: -10.0,
+   posted: Date.now() - 300000,
+   value: 10000,
    note: 'test note'
  },
  {
    id: 2,
-   posted: '01/01/2014',
-   value: -10.0,
+   posted: Date.now() - 3000000,
+   value: 4556,
    note: 'test note'
  },
  {
    id: 3,
-   posted: '01/01/2014',
-   value: -10.0,
+   posted: Date.now() - 30000000,
+   value: -14354,
    note: 'test note'
  }
 ];

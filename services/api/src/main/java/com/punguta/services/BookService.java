@@ -6,6 +6,7 @@ import com.punguta.jpa.domains.Account;
 import com.punguta.jpa.domains.Book;
 import com.punguta.jpa.domains.Currency;
 import com.punguta.jpa.domains.User;
+import com.punguta.services.events.details.TotalDetails;
 import com.punguta.services.exceptions.PungutaException;
 
 /**
@@ -20,4 +21,6 @@ public interface BookService {
     public void addAsset(Book book, String code, String name, String description, String currency);
 
     public void updateAccount(Account account);
+
+    public TotalDetails findTotals();
 }
